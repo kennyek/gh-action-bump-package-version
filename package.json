@@ -1,0 +1,22 @@
+{
+  "name": "gh-action-bump-package-version",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kennyek/gh-action-bump-package-version.git"
+  },
+  "author": "Kenny Ek",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kennyek/gh-action-bump-package-version/issues"
+  },
+  "homepage": "https://github.com/kennyek/gh-action-bump-package-version#readme",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.4"
+  }
+}

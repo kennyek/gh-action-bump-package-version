@@ -1,0 +1,5 @@
+name: Package Version Bump
+description: Bump package.json version based on new release branch version.
+runs:
+  using: node12
+  main: index.js
