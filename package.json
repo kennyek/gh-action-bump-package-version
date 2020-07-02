@@ -17,6 +17,6 @@
     "start": "node ./index.js"
   },
   "dependencies": {
-    "@actions/core": "^1.2.4"
+    "actions-toolkit": "^5.0.0"
   }
 }

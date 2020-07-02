@@ -1,11 +1,5 @@
-const core = require('@actions/core');
+const { Toolkit } = require('actions-toolkit');
 
-async function run() {
-  try {
-  }
-  catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-run();
+Toolkit.run(async tools => {
+  const pkg = tools.getPackageJSON();
+});
