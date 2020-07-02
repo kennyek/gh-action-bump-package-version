@@ -2,6 +2,8 @@ const { Toolkit } = require('actions-toolkit');
 
 Toolkit.run(async tools => {
   const pkg = tools.getPackageJSON();
+  tools.log('Log package.json:');
+  tools.log(pkg);
   const ref = tools.context.payload.ref;
   const version = ref.split('/').pop();
   const [major, minor, patch] = version.split('.');
