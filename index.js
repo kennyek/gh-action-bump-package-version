@@ -8,7 +8,7 @@ Toolkit.run(async tools => {
   const version = ref.split('/').pop();
   const [major, minor, patch] = version.split('.');
   const [pkgMajor, pkgMinor, pkgPatch] = pkg.version.split('.');
-  const newPkgVersion = getNewPkgVersion(version, pkgVersion);
+  const newPkgVersion = getNewPkgVersion(version, pkg.version);
 
   tools.log({
     ref,
