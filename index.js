@@ -2,8 +2,6 @@ const { Toolkit } = require('actions-toolkit');
 
 Toolkit.run(async tools => {
   const pkg = tools.getPackageJSON();
-  tools.log('Log package.json:');
-  tools.log(pkg);
   const ref = tools.context.payload.ref;
   const version = ref.split('/').pop();
   const [major, minor, patch] = version.split('.');
@@ -11,17 +9,11 @@ Toolkit.run(async tools => {
   const newPkgVersion = getNewPkgVersion(version, pkg.version);
 
   tools.log({
-    ref,
-    version,
     pkgVersion: pkg.version,
-    major,
-    minor,
-    patch,
-    pkgMajor,
-    pkgMinor,
-    pkgPatch,
     newPkgVersion
   });
+
+  // TODO: Use tools.github to push updated package.json?
 }, {
   event: 'create'
 });
