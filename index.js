@@ -28,7 +28,7 @@ Toolkit.run(async tools => {
 
 function getNewPkgVersion(version, pkgVersion) {
   const [major, minor, patch] = version.split('.');
-  const [pkgMajor, pkgMinor, pkgPatch] = pkg.version.split('.');
+  const [pkgMajor, pkgMinor, pkgPatch] = pkgVersion.split('.');
 
   const newVersion = {
     major: `${Number(pkgMajor) + 1}.0.0`,
