@@ -6,6 +6,7 @@ Toolkit.run(async tools => {
   const version = ref.split('/').pop();
   const [major, minor, patch] = version.split('.');
   const [pkgMajor, pkgMinor, pkgPatch] = pkg.version.split('.');
+  const newPkgVersion = getNewPkgVersion(version, pkgVersion);
 
   tools.log({
     ref,
@@ -16,8 +17,28 @@ Toolkit.run(async tools => {
     patch,
     pkgMajor,
     pkgMinor,
-    pkgPatch
+    pkgPatch,
+    newPkgVersion
   });
 }, {
   event: 'create'
 });
+
+function getNewPkgVersion(version, pkgVersion) {
+  const [major, minor, patch] = version.split('.');
+  const [pkgMajor, pkgMinor, pkgPatch] = pkg.version.split('.');
+
+  const newVersion = {
+    major: `${Number(pkgMajor) + 1}.0.0`,
+    minor: `${pkgMajor}.${Number(pkgMinor) + 1}.0`,
+    patch: `${pkgMajor}.${pkgMinor}.${Number(pkgPatch) + 1}`
+  };
+
+  if (minor === '0' && patch === '0') {
+    return newVersion.major;
+  } else if (patch === '0') {
+    return newVersion.minor;
+  } else {
+    return newVersion.patch;
+  }
+}
