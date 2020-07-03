@@ -67,7 +67,7 @@ async function gitClone(url, ref) {
   });
 }
 
-async updatePackageVersion(newPkgVersion) {
+async function updatePackageVersion(newPkgVersion) {
   const { dir } = gitData;
 
   const readDir = await new Promise((resolve, reject) =>
