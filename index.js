@@ -2,6 +2,7 @@ const { Toolkit } = require('actions-toolkit');
 const fs = require('fs');
 const git = require('isomorphic-git');
 const http = require('isomorphic-git/http/node');
+import path from 'path';
 
 const gitData = {
   repo: process.env.GITHUB_REPOSITORY,
@@ -12,12 +13,12 @@ const gitData = {
 };
 
 Toolkit.run(async tools => {
-  const { version: pkgVersion } = tools.getPackageJSON();
+  const pkg = tools.getPackageJSON();
   const ref = tools.context.payload.ref;
   const version = ref.split('/').pop();
-  const newPkgVersion = getNewPkgVersion(version, pkgVersion);
+  const newPkgVersion = getNewPkgVersion(version, pkg.version);
 
-  updateVersionOnGitHub(ref, newPkgVersion);
+  updateVersionOnGitHub(ref, newPkgVersion, pkg);
 }, {
   event: 'create'
 });
@@ -41,11 +42,11 @@ function getNewPkgVersion(version, pkgVersion) {
   }
 }
 
-async function updateVersionOnGitHub(ref, newPkgVersion) {
+async function updateVersionOnGitHub(ref, newPkgVersion, pkg) {
   const url = `https://github.com/${gitData.repo}`;
 
   await gitClone(url, ref);
-  await updatePackageVersion(newPkgVersion);
+  await updatePackageVersion(pkg, newPkgVersion);
   await gitAddAll();
   await gitCommit();
   await gitPush();
@@ -67,12 +68,37 @@ async function gitClone(url, ref) {
   });
 }
 
-async function updatePackageVersion(newPkgVersion) {
+async function updatePackageVersion(pkg, newPkgVersion) {
   const { dir } = gitData;
 
-  const readDir = await new Promise((resolve, reject) =>
-    fs.readdir(dir, (readError, files) => (readError ? reject(readError) : resolve(files)))
-  );
+  const pkgLock = await new Promise((resolve, reject) => {
+    fs.readFile(
+      path.resolve(dir, 'package-lock.json'),
+      (readError, file) => (readError ? reject(readError) : resolve(file))
+    )
+  });
+
+  const newPkg = Object.assign({}, pkg);
+  const newPkgLock = Object.assign({}, pkgLock);
+  newPkg.version = newPkgVersion;
+  newPkgLock.version = newPkgVersion;
+
+  await Promise.all([
+    new Promise((resolve, reject) => {
+      fs.writeFile(
+        path.resolve(dir, 'package.json'),
+        JSON.stringify(newPkg, null, 2),
+        writeError => (writeError ? reject(writeError) : resolve())
+      )
+    }),
+    new Promise((resolve, reject) => {
+      fs.writeFile(
+        path.resolve(dir, 'package-lock.json'),
+        JSON.stringify(newPkgLock, null, 2),
+        writeError => (writeError ? reject(writeError) : resolve())
+      )
+    })
+  ]);
 }
 
 async function gitAddAll() {
