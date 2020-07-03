@@ -34,10 +34,13 @@ function getNewPkgVersion(version, pkgVersion) {
   };
 
   if (minor === '0' && patch === '0') {
+    gitData.message = 'Package major version updated through GitHub Action';
     return newVersion.major;
   } else if (patch === '0') {
+    gitData.message = 'Package minor version updated through GitHub Action';
     return newVersion.minor;
   } else {
+    gitData.message = 'Package patch version updated through GitHub Action';
     return newVersion.patch;
   }
 }
