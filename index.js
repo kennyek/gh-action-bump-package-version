@@ -83,22 +83,20 @@ async function updatePackageVersion(pkg, newPkgVersion) {
   newPkg.version = newPkgVersion;
   newPkgLock.version = newPkgVersion;
 
-  await Promise.all([
-    new Promise((resolve, reject) => {
-      fs.writeFile(
-        path.resolve(dir, 'package.json'),
-        JSON.stringify(newPkg, null, 2),
-        writeError => (writeError ? reject(writeError) : resolve())
-      )
-    }),
-    new Promise((resolve, reject) => {
-      fs.writeFile(
-        path.resolve(dir, 'package-lock.json'),
-        JSON.stringify(newPkgLock, null, 2),
-        writeError => (writeError ? reject(writeError) : resolve())
-      )
-    })
-  ]);
+  await new Promise((resolve, reject) => {
+    fs.writeFile(
+      path.resolve(dir, 'package.json'),
+      JSON.stringify(newPkg, null, 2),
+      writeError => (writeError ? reject(writeError) : resolve())
+    )
+  });
+  await new Promise((resolve, reject) => {
+    fs.writeFile(
+      path.resolve(dir, 'package-lock.json'),
+      JSON.stringify(newPkgLock, null, 2),
+      writeError => (writeError ? reject(writeError) : resolve())
+    )
+  });
 }
 
 async function gitAddAll() {
