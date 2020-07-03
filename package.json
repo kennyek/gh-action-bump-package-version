@@ -17,6 +17,7 @@
     "start": "node ./index.js"
   },
   "dependencies": {
-    "actions-toolkit": "^5.0.0"
+    "actions-toolkit": "^5.0.0",
+    "isomorphic-git": "^1.7.0"
   }
 }
