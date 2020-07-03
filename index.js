@@ -84,8 +84,7 @@ async function gitAddAll() {
   };
 
   const status = await git.statusMatrix(repo);
-  await Promise.all(map(
-    status,
+  await Promise.all(status.map(
     ([filepath, worktreeStatus]) => (worktreeStatus ? git.add({ ...repo, filepath }) : git.remove({ ...repo, filepath }))
   ));
 }
