@@ -74,6 +74,7 @@ async function updatePackageVersion(pkg, newPkgVersion) {
   const pkgLock = await new Promise((resolve, reject) => {
     fs.readFile(
       path.resolve(dir, 'package-lock.json'),
+      'utf8',
       (readError, file) => (readError ? reject(readError) : resolve(file))
     )
   });
