@@ -2,7 +2,7 @@ const { Toolkit } = require('actions-toolkit');
 const fs = require('fs');
 const git = require('isomorphic-git');
 const http = require('isomorphic-git/http/node');
-import path from 'path';
+const path = require('path');
 
 const gitData = {
   repo: process.env.GITHUB_REPOSITORY,
