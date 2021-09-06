@@ -3,6 +3,7 @@ const fs = require('fs');
 const git = require('isomorphic-git');
 const http = require('isomorphic-git/http/node');
 const path = require('path');
+const os = require('os');
 
 const gitData = {
   repo: process.env.GITHUB_REPOSITORY,
@@ -89,14 +90,14 @@ async function updatePackageVersion(pkg, newPkgVersion) {
   await new Promise((resolve, reject) => {
     fs.writeFile(
       path.resolve(dir, 'package.json'),
-      JSON.stringify(newPkg, null, 2),
+      JSON.stringify(newPkg, null, 2) + os.EOL,
       writeError => (writeError ? reject(writeError) : resolve())
     )
   });
   await new Promise((resolve, reject) => {
     fs.writeFile(
       path.resolve(dir, 'package-lock.json'),
-      JSON.stringify(newPkgLock, null, 2),
+      JSON.stringify(newPkgLock, null, 2) + os.EOL,
       writeError => (writeError ? reject(writeError) : resolve())
     )
   });
